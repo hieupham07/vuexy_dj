@@ -25,6 +25,8 @@ urlpatterns = [
     # Dashboard urls
     path("", include("apps.dashboards.urls")),
 
+    path("", include("apps.pths.urls")),
+
     # layouts urls
     path("", include("apps.layouts.urls")),
 
