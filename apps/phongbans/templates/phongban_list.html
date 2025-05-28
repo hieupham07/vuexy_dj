@@ -1,0 +1,104 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}User List - Pages{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/bundle/popular.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<!-- <script src="{% static 'js/app-user-list.js' %}"></script> -->
+{% endblock page_js %}
+
+
+{% block content %}
+<div class="card">
+    <div class="card-header border-bottom">
+        <h2>Danh sách phòng ban</h2>
+    </div>
+    <div class="card-datatable table-responsive">
+        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+            <div class="row me-2">
+                <div class="col-md-2">
+                    <div class="me-3">
+                        <div class="dataTables_length" id="DataTables_Table_0_length">
+                            <label>
+                                <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0" >
+                        <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                            <form method="get" class="mb-3 d-flex " style="margin-bottom: 0 !important;">
+    <input type="text" class="form-control me-2" name="q" placeholder="Tìm kiếm phòng ban..." value="{{ search_query }}">
+    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+</form>
+                        </div>
+                        <div class="dt-buttons">
+                            <button class="dt-button buttons-collection dropdown-toggle btn btn-label-secondary mx-3" tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="dialog" aria-expanded="false"><span><i class="ti ti-screen-share me-1 ti-xs"></i>Export</span><span class="dt-down-arrow">▼</span>
+                            </button>
+                            <button class="dt-button add-new btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAddUser"><span><i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><a href="{% url 'phongban_create' %}" class="d-none d-sm-inline-block" style="color: #fff;">Thêm phòng ban</a></button> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+</div>
+
+  <table class="datatables-users table dataTable no-footer dtr-column collapsed">
+        <thead class="border-top">
+          <tr>
+            <th class="control sorting_disabled stt" rowspan="1" colspan="1" aria-label="">STT</th>
+            <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"  aria-label="User: activate to sort column ascending" aria-sort="descending">Tên Phòng bàn</th>
+            <th class="sorting " tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Mô Tả</th>
+            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending">Phòng ban cha</th>
+            <th class="sorting_disabled dtr-hidden" rowspan="1" colspan="1"  aria-label="Actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pb in phongbans %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ pb.ten_phong_ban }}</td>
+            <td>{{ pb.thong_tin }}</td>
+            <td>{% if pb.phong_ban_cha %}{{ pb.phong_ban_cha }}{% endif %}</td>
+            <td>
+        <div class="d-flex align-items-center"><a href="{% url 'phongban_update' pb.pk %}" class="text-body"><i class="ti ti-edit ti-sm me-2"></i></a><a href="{% url 'phongban_delete' pb.pk %}" class="text-body delete-record"><i class="ti ti-trash ti-sm mx-2"></i></a></div>
+        
+      </td>
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+</div>
+</div>
+
+
+{% endblock %}

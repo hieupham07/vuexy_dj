@@ -1,0 +1,93 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% if form.instance.pk %}Sửa Danh Mục Hồ Sơ{% else %}Thêm Danh Mục Hồ Sơ{% endif %}{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/bundle/popular.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Khởi tạo Select2 cho trường danh_muc_cha
+    if (typeof jQuery !== 'undefined') {
+      $('#id_danh_muc_cha').select2({
+        placeholder: "--- Chọn danh mục cha (nếu có) ---",
+        allowClear: true // Cho phép xóa lựa chọn
+      });
+    }
+  });
+</script>
+{% endblock page_js %}
+{% block content %}
+<div class="card col-md-6 mb-6">
+    <h3 class="card-header">Thêm Danh Mục Hồ Sơ</h3>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="{{ form.ten_danh_muc.id_for_label }}" class="form-label">Tên danh mục hồ sơ</label>
+                <input type="text" name="{{ form.ten_danh_muc.html_name }}" class="form-control" id="{{ form.ten_danh_muc.id_for_label }}"
+                       placeholder="Nhập tên danh mục hồ sơ" value="{{ form.ten_danh_muc.value|default_if_none:'' }}"
+                       {% if form.ten_danh_muc.field.required %}required{% endif %}>
+                {% if form.ten_danh_muc.errors %}
+                    <div class="text-danger">{{ form.ten_danh_muc.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.noi_dung.id_for_label }}" class="form-label">Nội dung</label>
+                <textarea name="{{ form.noi_dung.html_name }}" class="form-control" id="{{ form.noi_dung.id_for_label }}"
+                          rows="5" placeholder="Nhập nội dung hồ sơ">{% if form.noi_dung.value %}{{ form.noi_dung.value }}{% endif %}</textarea>
+                {% if form.noi_dung.errors %}
+                    <div class="text-danger">{{ form.noi_dung.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.mo_ta.id_for_label }}" class="form-label">Mô tả</label>
+                <textarea name="{{ form.mo_ta.html_name }}" class="form-control" id="{{ form.mo_ta.id_for_label }}"
+                          rows="4" placeholder="Nhập mô tả danh mục hồ sơ">{% if form.mo_ta.value %}{{ form.mo_ta.value }}{% endif %}</textarea>
+                {% if form.mo_ta.errors %}
+                    <div class="text-danger">{{ form.mo_ta.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.danh_muc_cha.id_for_label }}" class="form-label">Danh mục cha</label>
+                {{ form.danh_muc_cha }}
+                {% if form.danh_muc_cha.errors %}
+                    <div class="text-danger">{{ form.danh_muc_cha.errors }}</div>
+                {% endif %}
+                {% if form.danh_muc_cha.errors %}
+                    <div class="text-danger">{{ form.danh_muc_cha.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

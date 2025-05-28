@@ -1,0 +1,100 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Thêm Phòng Ban{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/bundle/popular.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<!-- <script src="{% static 'js/app-user-list.js' %}"></script> -->
+{% endblock page_js %}
+
+{% block content %}
+<div class="card col-md-6 mb-6">
+    <h3 class="card-header">Thêm Phòng Ban</h3>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="{{ form.ten_phong_ban.id_for_label }}" class="form-label">Tên phòng ban</label>
+                <input
+                    type="text"
+                    name="{{ form.ten_phong_ban.html_name }}"
+                    class="form-control"
+                    id="{{ form.ten_phong_ban.id_for_label }}"
+                    placeholder="Nhập tên phòng ban"
+                    value="{{ form.ten_phong_ban.value|default_if_none:'' }}"
+                    {% if form.ten_phong_ban.field.required %}required{% endif %}
+                    aria-describedby="tenPhongBanHelp">
+                {% if form.ten_phong_ban.errors %}
+                    <div class="text-danger">
+                        {{ form.ten_phong_ban.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.thong_tin.id_for_label }}" class="form-label">Mô tả</label>
+                <textarea
+                    name="{{ form.thong_tin.html_name }}"
+                    class="form-control"
+                    id="{{ form.thong_tin.id_for_label }}"
+                    rows="5"
+                    placeholder="Nhập mô tả phòng ban">{% if form.thong_tin.value %}{{ form.thong_tin.value }}{% endif %}</textarea>
+                {% if form.thong_tin.errors %}
+                    <div class="text-danger">{{ form.thong_tin.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.phong_ban_cha.id_for_label }}" class="form-label">Phòng ban cha</label>
+                <select
+                    name="{{ form.phong_ban_cha.html_name }}"
+                    class="form-select"
+                    id="{{ form.phong_ban_cha.id_for_label }}"
+                    aria-label="Default select example"
+                >
+                    <option value="" {% if not form.phong_ban_cha.value %}selected{% endif %}>Chọn phòng ban cha</option>
+                    {% for value, label in form.phong_ban_cha.field.choices %}
+                    {% if value %}
+                    <option value="{{ value }}"
+                            {% if value|stringformat:"s" == form.phong_ban_cha.value|stringformat:"s" %}selected{% endif %}
+                        >{{ label }}</option>
+                    {% endif %}
+                        
+                    {% endfor %}
+                </select>
+                {% if form.phong_ban_cha.errors %}
+                    <div class="text-danger">
+                        {{ form.phong_ban_cha.errors }}
+                    </div>
+                {% endif %}
+            </div>
+           
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

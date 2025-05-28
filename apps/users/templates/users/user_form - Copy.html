@@ -1,0 +1,154 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% if form.instance.pk %}Sửa Người Dùng{% else %}Thêm Người Dùng{% endif %}{% endblock %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-bs5/datatables.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/select2/select2.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
+<link rel="stylesheet" href="{% static 'vendor/libs/flatpickr/flatpickr.css' %}" /> {# Thêm CSS cho Date picker #}
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/moment/moment.js' %}"></script>
+<script src="{% static 'vendor/libs/datatables-bs5/datatables-bootstrap5.js' %}"></script>
+<script src="{% static 'vendor/libs/select2/select2.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/bundle/popular.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave.js' %}"></script>
+<script src="{% static 'vendor/libs/cleavejs/cleave-phone.js' %}"></script>
+<script src="{% static 'vendor/libs/flatpickr/flatpickr.js' %}"></script> {# Thêm JS cho Date picker #}
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Khởi tạo Select2 cho trường phòng ban
+    if (typeof jQuery !== 'undefined') {
+      $('#id_phong_ban').select2({
+        placeholder: "Chọn phòng ban",
+        allowClear: true // Cho phép xóa lựa chọn
+      });
+    }
+
+    // Khởi tạo Flatpickr cho trường ngày sinh
+    flatpickr("#id_ngay_sinh", {
+      dateFormat: "d/m/Y", // Định dạng ngày tháng
+      allowInput: true, // Cho phép nhập trực tiếp
+      // locale: "vn" // Nếu bạn có file ngôn ngữ tiếng Việt cho flatpickr
+    });
+  });
+</script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="card col-md-8 mb-6"> {# Tăng chiều rộng card để phù hợp với nhiều trường hơn #}
+    <h3 class="card-header">{% if form.instance.pk %}Sửa Người Dùng{% else %}Thêm Người Dùng{% endif %}</h3>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data"> {# Thêm enctype="multipart/form-data" nếu có trường hinh_anh #}
+            {% csrf_token %}
+
+            {# Trường tên_dang_nhap #}
+            <div class="mb-3">
+                <label for="{{ form.ten_dang_nhap.id_for_label }}" class="form-label">Tên đăng nhập</label>
+                {{ form.ten_dang_nhap }}
+                {% if form.ten_dang_nhap.errors %}
+                    <div class="text-danger">{{ form.ten_dang_nhap.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường email #}
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-danger">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường mat_khau #}
+            <div class="mb-3">
+                <label for="{{ form.mat_khau.id_for_label }}" class="form-label">Mật khẩu</label>
+                {{ form.mat_khau }}
+                {% if form.mat_khau.errors %}
+                    <div class="text-danger">{{ form.mat_khau.errors }}</div>
+                {% endif %}
+                <div class="form-text">
+                    {% if form.instance.pk %}Để trống nếu không muốn thay đổi mật khẩu.{% else %}Mật khẩu sẽ được mã hóa khi lưu.{% endif %}
+                </div>
+            </div>
+
+            {# Trường ngay_sinh #}
+            <div class="mb-3">
+                <label for="{{ form.ngay_sinh.id_for_label }}" class="form-label">Ngày sinh</label>
+                {{ form.ngay_sinh }}
+                {% if form.ngay_sinh.errors %}
+                    <div class="text-danger">{{ form.ngay_sinh.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường gioi_tinh #}
+            <div class="mb-3">
+                <label for="{{ form.gioi_tinh.id_for_label }}" class="form-label">Giới tính</label>
+                {{ form.gioi_tinh }}
+                {% if form.gioi_tinh.errors %}
+                    <div class="text-danger">{{ form.gioi_tinh.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường trinh_do #}
+            <div class="mb-3">
+                <label for="{{ form.trinh_do.id_for_label }}" class="form-label">Trình độ</label>
+                {{ form.trinh_do }}
+                {% if form.trinh_do.errors %}
+                    <div class="text-danger">{{ form.trinh_do.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường phong_ban (Select2) #}
+            <div class="mb-3">
+                <label for="{{ form.phong_ban.id_for_label }}" class="form-label">Phòng ban</label>
+                {{ form.phong_ban }}
+                {% if form.phong_ban.errors %}
+                    <div class="text-danger">{{ form.phong_ban.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường thong_tin #}
+            <div class="mb-3">
+                <label for="{{ form.thong_tin.id_for_label }}" class="form-label">Thông tin thêm</label>
+                {{ form.thong_tin }}
+                {% if form.thong_tin.errors %}
+                    <div class="text-danger">{{ form.thong_tin.errors }}</div>
+                {% endif %}
+            </div>
+
+            {# Trường hinh_anh (nếu có) #}
+            <div class="mb-3">
+                <label for="{{ form.hinh_anh.id_for_label }}" class="form-label">Hình ảnh</label>
+                {{ form.hinh_anh }}
+                {% if form.hinh_anh.errors %}
+                    <div class="text-danger">{{ form.hinh_anh.errors }}</div>
+                {% endif %}
+                {% if form.instance.hinh_anh and form.instance.hinh_anh.url %}
+                    <div class="mt-2">
+                        <img src="{{ form.instance.hinh_anh.url }}" alt="Ảnh hiện tại" style="max-width: 150px; max-height: 150px;">
+                        <span class="form-text ms-2">Ảnh hiện tại</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

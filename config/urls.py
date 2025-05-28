@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from web_project.views import SystemView
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,8 +26,13 @@ urlpatterns = [
     # Dashboard urls
     path("", include("apps.dashboards.urls")),
 
-    path("", include("apps.pths.urls")),
-
+path("", include("apps.pths.urls")),
+    path("", include("apps.phongbans.urls")),
+    path("", include("apps.danhmuchosos.urls")),
+    path("", include("apps.danhmuctailieus.urls")),
+    path("", include("apps.hosos.urls")),
+    path("", include("apps.tailieus.urls")),
+    # path("", include("apps.khos.urls")),
     # layouts urls
     path("", include("apps.layouts.urls")),
 
@@ -107,6 +113,7 @@ urlpatterns = [
 
     # Map urls
     path("", include("apps.maps.urls")),
+    path('accounts/login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
 ]
 
 handler404 = SystemView.as_view(template_name="layout/system.html", status=404)

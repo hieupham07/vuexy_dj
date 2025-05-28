@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Đăng nhập</title>
+</head>
+<body>
+    <h2>Đăng nhập</h2>
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="ten_dang_nhap">Tên đăng nhập:</label>
+        <input type="text" name="ten_dang_nhap" required><br>
+        <label for="mat_khau">Mật khẩu:</label>
+        <input type="password" name="mat_khau" id="id_mat_khau" autocomplete="current-password"><br>
+        <button type="submit">Đăng nhập</button>
+    </form>
+</body>
+</html>

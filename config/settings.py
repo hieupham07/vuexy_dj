@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apps.phongbans",
     "apps.dashboards",
     "apps.pths",
     "apps.layouts",
@@ -80,6 +81,10 @@ INSTALLED_APPS = [
     "apps.tables",
     "apps.charts",
     "apps.maps",
+    "apps.danhmuchosos",
+    "apps.hosos",
+    "apps.danhmuctailieus",
+    "apps.tailieus",
 ]
 
 MIDDLEWARE = [
@@ -154,6 +159,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_URL = '/accounts/login/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -186,11 +194,13 @@ LOCALE_PATHS = [
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 STATICFILES_DIRS = [
     BASE_DIR / "src" / "assets",
+    
 ]
 
 # if not DEBUG:
@@ -210,3 +220,5 @@ THEME_VARIABLES = THEME_VARIABLES
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+

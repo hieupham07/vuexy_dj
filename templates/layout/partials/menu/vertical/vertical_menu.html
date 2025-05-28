@@ -1,12 +1,13 @@
+{% load static %}
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <!-- ! Hide app brand if navbar-full -->
   {% if not navbar_full %}
-  <div class="app-brand demo">
+  <div class="app-brand demo" style="margin-left: 0;">
     <a href="{% url 'index' %}" class="app-brand-link">
-      <span class="app-brand-logo demo">
+      <span class="app-brand-logo demo" style="width: 60px;height: 60px;">
         {% include 'partials/logo.html' %}
       </span>
-      <span class="app-brand-text demo menu-text fw-bold ms-2">{% get_theme_variables 'template_name' %}</span>
+      <span class="app-brand-text demo menu-text fw-bold ms-2" style="height: 36px;margin-top: 8px;"><img src="{% static 'img/logo1.png' %}" alt="" style="max-height: 100%;max-width: 100%;"></span>
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">

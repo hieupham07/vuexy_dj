@@ -1,0 +1,19 @@
+<h2>Danh sách phòng ban</h2>
+<a href="{% url 'phongban_create' %}">Thêm phòng ban</a>
+<table>
+    <tr>
+        <th>Tên phòng ban</th>
+        <th>Thông tin</th>
+        <th>Hành động</th>
+    </tr>
+    {% for pb in phongbans %}
+    <tr>
+        <td>{{ pb.ten_phong_ban }}</td>
+        <td>{{ pb.thong_tin }}</td>
+        <td>
+            <a href="{% url 'phongban_update' pb.pk %}">Sửa</a> |
+            <a href="{% url 'phongban_delete' pb.pk %}">Xóa</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

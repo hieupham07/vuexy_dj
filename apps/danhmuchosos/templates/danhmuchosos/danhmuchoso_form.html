@@ -1,0 +1,14 @@
+<h2>Thêm Phòng Ban</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="{{ form.ten_phong_ban.id_for_label }}">Tên phòng ban</label>
+    {{ form.ten_phong_ban }}
+    <br>
+    <label for="{{ form.thong_tin.id_for_label }}">Thông tin</label>
+    {{ form.thong_tin }}
+    <br>
+    <label for="{{ form.phong_ban_cha.id_for_label }}">Phòng ban cha</label>
+    {{ form.phong_ban_cha }}
+    <br>
+    <button type="submit">Lưu</button>
+</form>
